@@ -87,8 +87,8 @@ def login():
         if login_name != '' and login_password != '' :
             ques = people.query.filter_by(name =login_name ).all()
             if len(ques)==0:
-                flash( "you need to register first") 
-                return render_template('register.html')
+                flash( "the username is incorrect, please register or enter correct username") 
+                return render_template('login.html')
             else:
                 if people.query.filter_by(password =login_password ).all():
                     return redirect('/after')
