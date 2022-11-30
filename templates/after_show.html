@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>name</title>
+</head>
+   <body>
+
+      <h3>
+         <a href = "/postpage">all the rooms which we have now</a>
+      </h3>
+
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+
+      <h3>if you want to add new rooms (<a href = "{{ url_for('new') }}">添加
+         </a>)</h3>
+
+      <table>
+         <thead>
+            <tr>
+               <th>room_name</th>
+               <th>city</th>
+               <th>neighbor</th>
+               <th>Price</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for room in rooms %}
+               <tr>
+                  <td>{{ room.room_name }}</td>
+                  <td>{{ room.city }}</td>
+                  <td>{{ room.neighbor}}</td>
+                  <td>{{ room.price}}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+
+      <p>want to log out <a href="/logout">click here</a></p>
+
+
+   </body>
+</html>
+
+

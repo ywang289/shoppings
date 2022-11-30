@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>name</title>
+</head>
+   <body>
+
+      <h1>
+      Welcome to 6770 shopping web    
+      </h1>
+
+      <hr/>
+      
+      
+      <table>
+         <thead>
+            <tr>
+               <th>room_name</th>
+               <th>city</th>
+               
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for room in rooms %}
+               <tr>
+                  <td>{{ room.room_name }}</td>
+                  <td>{{ room.city }}</td>
+                  
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+
+      <p>want to see more details? please login first <a href="/login">click here</a></p>
+
+
+   </body>
+</html>
+
+
