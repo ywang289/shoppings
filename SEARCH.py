@@ -146,8 +146,8 @@ def search():
             ))
     return render_template('search.html', rooms=ques)
 if __name__ == '__main__':
-    print(Rooms.query.all())
-    print(people.query.all()[0])
+#     print(Rooms.query.all())
+#     print(people.query.all()[0])
  
    
     
