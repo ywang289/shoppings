@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        div {
+          background-color: lightgrey;
+          width: 300px;
+          border: 15px solid #BAA1C2;
+          padding: 50px;
+          margin: 20px;
+        }
+        
+        .nav {
+          background-color: yellow;
+          list-style-type: none;
+          text-align: center;
+          margin: 0;
+          padding: 0;
+        }
+        label {
+          text-align: center;
+        }
+        input {
+          text-align: center;
+        }
+        body{
+            background-color:  #E3E8ED;
+        }
+        .btn {
+        BORDER: 1px solid;  COLOR: black; height: 30px; width: 30px;
+        WIDTH: 33%;
+        display: inline-block;
+        }
+        .button {
+          border: 2px solid;
+          color: black;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          width: 33%;
+        }
+        h1{
+            text-align: center;
+        }
+        form{
+            text-align: center;
+        }
+        p{
+            text-align:center;
+        }
+        </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat page for {{ username }}</title>
+</head>
+
+<body>
+    <h1>Welcome, {{ username }}</h1>
+
+    <form method="POST">
+        <textarea cols="50" rows="4" name="message" id="message"></textarea>
+        <br>
+        <button>Send Message</button>
+    </form>
+
+    {% for message in chat_messages %}
+    <p>({{ message.timestamp }}) {{ message.from }}: {{ message.message}}</p>
+    {% endfor %}
+
+    <script>
+        let textbox = document.getElementById("message");
+
+        let timer = setTimeout(function() {
+            location.reload();
+        }, 10000);
+        // Every 5 seconds, messages will get refreshed 
+
+        textbox.onkeydown = function(e) { // Once key pressed, then function starts & timer stops
+            clearTimeout(timer)
+
+            timer = setTimeout(function() {
+                location.reload(); // reload starts whole process again
+            }, 10000) // User get 5 seconds between key presses to continue writing their message
+        };
+    </script>
+
+</body>
+
+</html>
