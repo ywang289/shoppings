@@ -234,14 +234,6 @@ def search():
             ))
     return render_template('search.html', rooms=ques)
 if __name__ == '__main__':
-    print(Rooms.query.all())
-    
-    # people.query.delete()
-    for i in people.query.all():
-        print(i.name)
-        print(i.password)
-    
-    
     
     
 
