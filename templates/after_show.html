@@ -67,7 +67,7 @@ p{
          {{ message }}
       {%- endfor %}
 
-      <h3>if you want to add new rooms (<a href = "{{ url_for('new') }}">添加
+      <h3>if you want to add new rooms (<a href = "{{ url_for('new') }}"> add new room
          </a>)</h3>
 
       <table>
@@ -91,7 +91,8 @@ p{
             {% endfor %}
          </tbody>
       </table>
-
+      <p>want to change password <a href="/edit">click here</a></p>
+      <p>want to chat <a href="/profile">click here</a></p>
       <p>want to log out <a href="/logout">click here</a></p>
 
 
