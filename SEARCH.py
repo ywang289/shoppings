@@ -263,7 +263,7 @@ def search():
     return render_template('search.html', rooms=ques)
 
 if __name__ == '__main__':
-    print(Rooms.query.all())
+   
     
   
     app.run(host='0.0.0.0', port=8080, debug=True)
