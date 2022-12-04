@@ -1,10 +1,11 @@
 from flask import Flask
 from flask import flash
 from flask import render_template, redirect, url_for, request, session
-
 import config
 from datetime import datetime
 from sqlalchemy import or_, and_
+from sqlalchemy import desc
+
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -20,7 +21,7 @@ class Rooms(db.Model):
     #id = db.Column('id', db.Integer, primary_key = True)
     room_name = db.Column(db.String(20), primary_key = True)
     city = db.Column(db.String(200), nullable=False)
-    neighbor = db.Column(db.String(200), nullable=False)
+    neighbor = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Integer, nullable=False)
 
     def __init__(self, room_name, city, neighbor,price):
@@ -40,12 +41,13 @@ class people(db.Model):
         self.name = name
         self.email = email
         self.password= password
+    
+    
+
 class message(db.Model):
     
     name= db.Column(db.String(20), primary_key = True)
     message = db.Column(db.String(200), nullable=False)
-
-   
 
     def __init__(self, name,message):
         self.name = name
@@ -57,7 +59,18 @@ current_user=[]
 @app.before_first_request
 def create_tables():
     db.create_all()
-    people.query.delete()
+    # room = Rooms("villas", "buffalo",3, 1000)
+    # db.session.add(room)
+    # db.session.commit()
+
+    # room2 = Rooms("good_house", "bulo",1, 1500)
+    # db.session.add(room2)
+    # db.session.commit()
+
+    # room3 = Rooms("near_sea_house", "la",5, 6800)
+    # db.session.add(room3)
+    # db.session.commit()
+
     
 def add_message(username, message):
     now = datetime.now().strftime("%H:%M:%S") # new variable = now
@@ -67,10 +80,9 @@ def add_message(username, message):
 def index():
     if request.method == "POST":
         session["username"] = request.form["username"]
-        
-    if "username" in session:
         return redirect(url_for("user", username=session["username"]))
-    
+        
+   
     return render_template("profile.html") # 'index.html' now replaces message
 
 
@@ -86,6 +98,21 @@ def user(username):
         return redirect(url_for("user", username=session["username"]))
     
     return render_template("chat.html", username = username, chat_messages = messages)
+
+@app.route('/delete',methods = ["GET", "POST"])
+
+def delete():
+    username = session["username"]
+    message_obj = message.query.filter_by(name=username).all()
+    
+    if message_obj:
+        db.session.delete(message_obj)
+    
+    db.session.commit()
+    
+
+    return redirect('/profile')
+
     
     
     
@@ -98,6 +125,8 @@ def show_all():
 @app.route('/after')
 def after_show():
     return render_template('after_show.html',rooms = Rooms.query.all())
+
+
 
 
 
@@ -173,6 +202,8 @@ def dashboard():
                     sql = "UPDATE people SET name = '{}' where email = '{}'".format(new_username, email)
                     db.session.execute(sql)
                     db.session.commit()
+                    flash( "update successfully") 
+                    return redirect('/login')
         return render_template("edit.html")
     else: 
         flash( "please log in first") 
@@ -194,13 +225,19 @@ def new():
       if not request.form['room_name'] :
           flash('Please enter all the fields', 'error')
       else:
-         room = Rooms(request.form['room_name'], request.form['city'],request.form['neighbor'], request.form['price'])
+        post_name = request.form['room_name']
+        room_list = Rooms.query.filter_by(room_name=post_name).all()
+       
+        if len(room_list)==0:
+            room = Rooms(request.form['room_name'], request.form['city'],request.form['neighbor'], request.form['price'])
 
-         db.session.add(room)
-         db.session.commit()
-         flash('Record was successfully added')
-         msg = "Record successfully added"
-         return render_template("result.html",msg = msg)
+            db.session.add(room)
+            db.session.commit()
+            flash('Record was successfully added')
+            msg = "Record successfully added"
+            return render_template("result.html",msg = msg)
+        else:
+            flash("please change another room name", 'error')
    return render_template('new.html')
 
 @app.route('/postpage')
@@ -208,34 +245,26 @@ def postpage():
     return render_template('postPage.html')
 
 
-
 @app.route('/search/')
 def search():
     c = request.args.get('city')
-    n = request.args.get('neighbor')
-    if c != '' and n != '':
-        ques = Rooms.query.filter(
-            and_(
-                Rooms.city == c,
-
-                Rooms.neighbor == n
-            ))
-    elif c == '' and n != '':
-        ques = Rooms.query.filter(
-            and_(
-
-                Rooms.neighbor == n
-            ))
-    elif c != '' and n == '':
-        ques = Rooms.query.filter(
-            and_(
-
-                Rooms.city == c
-            ))
+    way = request.args.get('direction')
+    if way=="from_higher":
+        ques=Rooms.query.filter(Rooms.city.endswith(c)).order_by(Rooms.price.desc()).all()
+    # elif way=="neighbor_from_smaller":
+    #     ques=Rooms.query.filter (Rooms.city.endswith(c))
+    #     for i in ques:
+    #         print(i.neighbor)
+    # elif way=="neighbor_from_higher":
+    #     ques=Rooms.query.filter(Rooms.city.endswith(c)).order_by(Rooms.neighbor.desc()).all()
+    else:
+        ques=Rooms.query.filter(Rooms.city.endswith(c)).order_by(Rooms.price.asc()).all()
+    
     return render_template('search.html', rooms=ques)
-if __name__ == '__main__':
-    
-    
 
+if __name__ == '__main__':
+    print(Rooms.query.all())
+    
+  
     app.run(host='0.0.0.0', port=8080, debug=True)
 
