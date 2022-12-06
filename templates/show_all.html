@@ -2,11 +2,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>name</title>
+<link rel="stylesheet" href="../static/css/style.css">
 </head>
 <style>
 div {
-  background-color: lightgrey;
-  width: 300px;
+ 
+  width: 100%;
   border: 15px solid #BAA1C2;
   padding: 50px;
   margin: 20px;
@@ -57,24 +58,26 @@ p{
 </style>
 
    <body>
-
-
-      <h1>
+      
+      <h1 style="font-style: oblique">
       Welcome to 6770 shopping web    
       </h1>
 
       <hr/>
       
       
-      <table>
+      <div style="text-align:center">
+                   
+         <table border="1" cellpadding="3" cellspacing="0" style="width: 60%;margin:auto">
+
          <thead>
             <tr>
-               <th>room_name</th>
-               <th>city</th>
+               <th>Name</th>
+               <th>City</th>
                
             </tr>
          </thead>
-
+         
          <tbody>
             {% for room in rooms %}
                <tr>
@@ -85,6 +88,7 @@ p{
             {% endfor %}
          </tbody>
       </table>
+     </div>
 
       <p>want to see more details? please login first <a href="/login">click here</a></p>
 

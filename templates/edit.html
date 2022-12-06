@@ -1,5 +1,6 @@
 <head>
   <title>profile Page</title>
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <style>
@@ -123,15 +124,17 @@ background-color:  #c9c4de;
     </div>
   </div>
  
+
  <form action="/edit" method="POST" enctype="multipart/form-data">
-    <p>
+
+
+    <p><h2 style="font-style:unset"  >
         Want to change your username?
-           </p>
+    </h2></p>
    
     <label for="Username">Username:</label>
-    <input type="text" id="name" name="name"><br><br>
-
-    <input type="submit" value="Submit" class="btn btn-info">
+    <input type="text" id="name" name="name" required="required"><br><br>
+    <input type="submit" value="Submit" class="btn btn-info" >
 </form>
 </form>
 

@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Document</title>
+</head>
+<body>
    <body>
    
 <style>
@@ -76,13 +88,13 @@ h3{
       
       <form action = "{{ request.path }}" method = "post">
          <label for = "name">name</label><br>
-         <input type = "text" name = "name" placeholder = "name" /><br>
+         <input type = "text" name = "name" placeholder = "name" required="required"/><br>
          <label for = "city">email</label><br>
-         <input type = "text" name = "email" placeholder = "email" /><br>
+         <input type = "text" name = "email" placeholder = "email" required="required"/><br>
          <label for = "neighbor">password</label><br>
          <input type = "text" name = "password" placeholder = "password" /><br>
         
-         <input type = "submit" value = "Submit" />
+         <input type="submit" value="Submit" class="btn btn-info">
       </form>
 
       {%- for message in get_flashed_messages() %}

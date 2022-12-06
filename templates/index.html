@@ -2,7 +2,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>name</title>
+<link rel="stylesheet" href="../static/css/style.css">
 </head>
+
+
+<body>
+
 <style>
    .container-fluid{
      background-color: #95bcef;
@@ -120,12 +125,24 @@ background-color:  #c9c4de;
    <body>
       <div class="jumbotron">
          <div class="text-center">
-           <h1 style="font-style: oblique">6770!</h1>
+            <h1 style="font-style: oblique">
+               Welcome to 6770 shopping web    
+               </h1>
+         
          </div>
        </div>
 
       <h3>
-         <a href = "/postpage">all the rooms which we have now</a>
+      <p> <a href="/edit">change username</a></p>
+      <p></p>
+      <p><a href="/profile">go to chat</a></p>
+      <p></p>
+      <p><a href = "{{ url_for('new') }}"> add new room</a></p>
+      <p></p>
+      <p><a href = "/postpage">search room</a></p>
+      <p></p>
+      <p> <a href="/logout">log out</a></p>
+      
       </h3>
 
       <hr/>
@@ -133,39 +150,39 @@ background-color:  #c9c4de;
          {{ message }}
       {%- endfor %}
 
-      <h3>if you want to add new rooms (<a href = "{{ url_for('new') }}"> add new room
-         </a>)</h3>
-
+   
       <form action="/upload" enctype='multipart/form-data' method='POST'>
             <img style="width:180px" src="data:;base64,{{ img_stream }}">
-            <input type="file" name="file" style="margin-top:20px;"/>
-            <input type="submit" value="upload" class="button-new" style="margin-top:15px;"/>
+            <input type="file" name="file" style="margin-top:20px;" required="required">
+            <input type="submit" value="upload" class="btn btn-info",style="height:5% ;">
     </form>
 
-      <table>
-         <thead>
-            <tr>
-               <th>room_name</th>
-               <th>city</th>
-               <th>neighbor</th>
-               <th>Price</th>
-            </tr>
-         </thead>
+    <div style="text-align:center">
+                   
+      <table border="1px " cellpadding="3" cellspacing="0" style="width: 60%;margin:auto">
 
-         <tbody>
-            {% for room in rooms %}
-               <tr>
-                  <td>{{ room.room_name }}</td>
-                  <td>{{ room.city }}</td>
-                  <td>{{ room.neighbor}}</td>
-                  <td>{{ room.price}}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
-      <p>want to change username? <a href="/edit">click here</a></p>
-      <p>want to chat <a href="/profile">click here</a></p>
-      <p>want to log out <a href="/logout">click here</a></p>
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>City</th>
+            <th>Neighbor</th>
+            <th>Price</th>
+         </tr>
+      </thead>
+      
+      <tbody>
+         {% for room in rooms %}
+            <tr>
+               <td>{{ room.room_name }}</td>
+               <td>{{ room.city }}</td>
+               <td>{{ room.neighbor }}</td>
+               <td>{{ room.price }}</td>
+            </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+  </div>
+      
 
 
    </body>

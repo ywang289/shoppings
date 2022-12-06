@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
    <body>
-   
+    <link rel="stylesheet" href="../static/css/style.css">
     <style>
       .container-fluid{
         background-color: #95bcef;
@@ -127,14 +127,14 @@
       
       <form action = "{{ request.path }}" method = "post">
          <label for = "name">room_name</label><br>
-         <input type = "text" name = "room_name" placeholder = "room_name" /><br>
+         <input type = "text" name = "room_name" placeholder = "room_name" ,required="required"/><br>
          <label for = "city">City</label><br>
-         <input type = "text" name = "city" placeholder = "city" /><br>
+         <input type = "text" name = "city" placeholder = "city" ,required="required"/><br>
          <label for = "neighbor">neighbor</label><br>
-         <input type = "text" name = "neighbor" placeholder = "neighbor" /><br>
+         <input type = "text" name = "neighbor" placeholder = "neighbor" ,required="required"/><br>
          <label for = "price">price</label><br>
-         <input type = "text" name = "price" placeholder = "price" /><br>
-         <input type = "submit" value = "Submit" />
+         <input type = "text" name = "price" placeholder = "price",required="required" /><br>
+         <input type="submit" value="Submit" class="btn btn-info">
       </form>
       {%- for message in get_flashed_messages() %}
       {{ message }}
