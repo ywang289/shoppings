@@ -44,14 +44,7 @@ class people(db.Model):
     
     
 
-class message(db.Model):
-    
-    name= db.Column(db.String(20), primary_key = True)
-    message = db.Column(db.String(200), nullable=False)
 
-    def __init__(self, name,message):
-        self.name = name
-        self.message = message
        
 messages=[]       
 current_user=[]
@@ -130,19 +123,17 @@ def user(username):
 
 def delete():
     username = session["username"]
-    message_obj = message.query.filter_by(name=username).all()
+    if len(messages)!=0:
+        for i in range(len(messages)-1, -1, -1):
+           if messages[i]["from"]==username:
+              messages.pop(i)
+            
     
-    if message_obj:
-        db.session.delete(message_obj)
+            # if messages[i]["from"]==username:
+            #     messages.pop(i)
     
-    db.session.commit()
-    
-
     return redirect('/profile')
 
-    
-    
-    
     
 
 @app.route('/')
@@ -318,7 +309,7 @@ def search():
     return render_template('search.html', rooms=ques)
 
 if __name__ == '__main__':
-   
-  
+    
+
     app.run(host='0.0.0.0', port=8080, debug=True)
 
