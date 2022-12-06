@@ -54,7 +54,8 @@ class message(db.Model):
         self.message = message
        
 messages=[]       
-current_user=[] 
+current_user=[]
+
 
 @app.before_first_request
 def create_tables():
@@ -85,6 +86,28 @@ def index():
    
     return render_template("profile.html") # 'index.html' now replaces message
 
+import os 
+
+from werkzeug.utils import secure_filename
+from datetime import timedelta
+
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'JPG', 'PNG', 'bmp'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+app.send_file_max_age_default = timedelta(seconds=1)
+
+def return_img_stream(img_local_path):
+   
+    import base64
+    img_stream = ''
+    with open(img_local_path, 'rb') as img_f:
+        img_stream = img_f.read()
+        img_stream = base64.b64encode(img_stream).decode()
+    return img_stream
+ 
+
 
 
 @app.route('/chat/<username>', methods = ["GET", "POST"])
@@ -92,6 +115,10 @@ def user(username):
     """ Add & Display chat messages. {0} = username argument """
     """ username & messages get added to the list """
     if request.method == "POST":
+        basepath = os.path.dirname(__file__)
+        upload_path = os.path.join(basepath, 'static/images', secure_filename('cat.jpg'))
+       
+        img_stream = return_img_stream(upload_path)
         username = session["username"]
         message = request.form["message"]
         add_message(username,message)
@@ -124,7 +151,35 @@ def show_all():
 
 @app.route('/after')
 def after_show():
-    return render_template('after_show.html',rooms = Rooms.query.all())
+        basepath = os.path.dirname(__file__)
+        # 一定要先创建该文件夹，不然会提示没有该路径
+        upload_path = os.path.join(basepath, 'static/images', secure_filename("cat.jpg"))
+        # # 保存文件
+        # f.save(upload_path)
+        img_stream = return_img_stream(upload_path)
+        
+        return render_template('after_show.html',rooms = Rooms.query.all(), img_stream=img_stream)
+
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    if request.method == 'POST':
+        
+        # 通过file标签获取文件
+        f = request.files['file']
+        if not (f and allowed_file(f.filename)):
+            flash("please choose correct file")
+        # 当前文件所在路径
+        basepath = os.path.dirname(__file__)
+        # 一定要先创建该文件夹，不然会提示没有该路径
+        upload_path = os.path.join(basepath, 'static/images', secure_filename(f.filename))
+        # # 保存文件
+        # f.save(upload_path)
+          
+        img_stream = return_img_stream(upload_path)
+        return render_template("index.html",  img_stream = img_stream, rooms = Rooms.query.all())
+    # 重新返回上传界面
+    return flash("not successfully")
+
 
 
 
@@ -263,7 +318,7 @@ def search():
     return render_template('search.html', rooms=ques)
 
 if __name__ == '__main__':
-   
+    print(Rooms.query.all())
     
   
     app.run(host='0.0.0.0', port=8080, debug=True)
