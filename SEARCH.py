@@ -164,7 +164,7 @@ def upload():
         # 一定要先创建该文件夹，不然会提示没有该路径
         upload_path = os.path.join(basepath, 'static/images', secure_filename(f.filename))
         # # 保存文件
-        # f.save(upload_path)
+        f.save(upload_path)
           
         img_stream = return_img_stream(upload_path)
         return render_template("index.html",  img_stream = img_stream, rooms = Rooms.query.all())
